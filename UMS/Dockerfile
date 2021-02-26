@@ -6,8 +6,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
-COPY ["UMS/UMS.csproj", "UMS/"]
-RUN dotnet restore "UMS/UMS.csproj"
+COPY ["UMS.csproj", "UMS/"]
+RUN dotnet restore "UMS.csproj"
 COPY . .
 WORKDIR "/src/UMS"
 RUN dotnet build "UMS.csproj" -c Release -o /app/build
