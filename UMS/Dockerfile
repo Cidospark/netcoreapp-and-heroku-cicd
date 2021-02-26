@@ -10,10 +10,10 @@ COPY ["UMS.csproj", "UMS/"]
 RUN dotnet restore "UMS.csproj"
 COPY . .
 WORKDIR "/src/UMS"
-RUN dotnet build "UMS/UMS.csproj" -c Release -o /app/build
+RUN dotnet build "../UMS.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "UMS/UMS.csproj" -c Release -o /app/publish
+RUN dotnet publish "../UMS.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
