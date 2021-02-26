@@ -1,16 +1,32 @@
-name: Deploy
-on:
-  push:
-    branches:
-      - main
+name: CI
+
+on: 
+  pull_request:
+    branches: [ main ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '2.2' ]
+    name: Dotnet ${{ matrix.dotnet }} build
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.0.0
+      - name: Build and deploy the Docker image
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_NAME: ${{ 'ums01' }}
+        
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ums01"
-          heroku_email: "cidospark27@gmail.com"
-          usedocker: true
+          dotnet-version: ${{ matrix.dotnet }}
+      - run: dotnet build UMS
+
+      - run: |
+            docker build -t ums UMS
+            docker tag ums registry.heroku.com/$APP_NAME/web
+            docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+            heroku container:push web -a $APP_NAME
+            heroku container:release web -a $APP_NAME
