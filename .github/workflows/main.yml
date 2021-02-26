@@ -1,12 +1,15 @@
 name: CI
 
 on:
-  pull_request:
+  push:
     branches:
-    - main
+      - main
+  pull_request: 
+    branches:
+      - main
 
 jobs:
-  build_ums01:
+  build_ums:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,6 +18,9 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         APP_NAME: ${{ 'ums01' }}
       run: |
+        cd ./UMS
+        docker build -t ums .
+        docker tag ums registry.heroku.com/$APP_NAME/web
         docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
         heroku container:push web -a $APP_NAME
         heroku container:release web -a $APP_NAME
