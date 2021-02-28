@@ -3,19 +3,15 @@
     ViewBag.Title = "Index";
 }
 
-<div class="d-flex">
-    @foreach (var employee in Model)
-    {
-        <div class="card m-3 col-4">
-            <div class="card-header">@employee.Name</div>
-            <div class="card-img-top"><img src="~/images/mami.jpeg" class="w-100" /></div>
-            <div class="card-footer">
-                <a href="" class="btn btn-info">View</a>
-                <a href="" class="btn btn-primary">Edit</a>
-                @*<a href="javascript:void()" class="btn btn-danger btnDel">Delete</a>*@
-            </div>
-        </div>
-    }
+<div class="big-outer-wrapper bg-navy-blue">
+   <div class="div-container flex-center">
+       <div class="left-side-div bordered">
+
+       </div>
+       <div class="right-side-div bg-grey-light">
+
+       </div>
+   </div>
 </div>
 
 @section Scripts{

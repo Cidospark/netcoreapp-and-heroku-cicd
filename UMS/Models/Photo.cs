@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace UMS.Models
 {
-    public interface IEmployeeRepository
+    public class Photo
     {
-        Employee GetEmployee(int id);
-        List<Employee> GetEmployees();
+        public string Url { get; set; }
     }
 }

@@ -1,0 +1,132 @@
+[
+  {
+    "Username": "Reid",
+    "Gender": "female",
+    "Email": "reidobrien@geoforma.com",
+    "PhoneNumber": "(955) 565-3104",
+    "City": "Wikieup",
+    "Country": "Nigeria",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/65.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Casey",
+    "Gender": "female",
+    "Email": "caseyobrien@geoforma.com",
+    "PhoneNumber": "(909) 456-2273",
+    "City": "Dragoon",
+    "Country": "Haiti",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/3.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Mullins",
+    "Gender": "female",
+    "Email": "mullinsobrien@geoforma.com",
+    "PhoneNumber": "(958) 518-2310",
+    "City": "Takilma",
+    "Country": "St. Pierre and Miquelon",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/52.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Marsh",
+    "Gender": "female",
+    "Email": "marshobrien@geoforma.com",
+    "PhoneNumber": "(959) 418-3566",
+    "City": "Monument",
+    "Country": "Bosnia and Herzegovina",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/98.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Dale",
+    "Gender": "female",
+    "Email": "daleobrien@geoforma.com",
+    "PhoneNumber": "(961) 467-3022",
+    "City": "Inkerman",
+    "Country": "Tajikistan",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/51.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Pollard",
+    "Gender": "male",
+    "Email": "pollardobrien@geoforma.com",
+    "PhoneNumber": "(980) 458-2106",
+    "City": "Winchester",
+    "Country": "Nicaragua",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/84.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Sherman",
+    "Gender": "male",
+    "Email": "shermanobrien@geoforma.com",
+    "PhoneNumber": "(955) 536-3574",
+    "City": "Levant",
+    "Country": "Mongolia",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/19.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Jacobson",
+    "Gender": "male",
+    "Email": "jacobsonobrien@geoforma.com",
+    "PhoneNumber": "(985) 428-2968",
+    "City": "Golconda",
+    "Country": "Albania",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/24.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Schroeder",
+    "Gender": "male",
+    "Email": "schroederobrien@geoforma.com",
+    "PhoneNumber": "(897) 567-3555",
+    "City": "Magnolia",
+    "Country": "Latvia",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/99.jpg"
+      }
+    ]
+  },
+  {
+    "Username": "Adams",
+    "Gender": "male",
+    "Email": "adamsobrien@geoforma.com",
+    "PhoneNumber": "(806) 565-3878",
+    "City": "Bradenville",
+    "Country": "Uzbekistan",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/39.jpg"
+      }
+    ]
+  }
+]
