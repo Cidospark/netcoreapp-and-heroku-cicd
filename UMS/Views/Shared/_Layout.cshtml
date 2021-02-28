@@ -6,20 +6,21 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous"
-            asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
-                asp-fallback-test-class="sr-only"
-                asp-fallback-test-property="position"
-                asp-fallback-test-value="absolute"
-                asp-suppress-fallback-integrity="true">
+              asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              asp-suppress-fallback-integrity="true">
     </environment>
     <environment include="Development">
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
         <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
     </environment>
+    <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    @*<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand">
                 <img src="~/images/mami.jpeg" width="30" height="30" asp-append-version="true" />
@@ -34,7 +35,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>*@
     @RenderBody()
 </body>
 @RenderSection("Scripts", required: false)

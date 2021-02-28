@@ -1,2 +1,63 @@
 ﻿body {
 }
+
+/***********colors*************/
+.bg-navy-blue {
+    background: #262A41;
+}
+
+.bg-pink {
+    background: #F935A9
+}
+
+.bg-green {
+    background: #30BBB5;
+}
+
+.bg-purple {
+    background: #7946C1;
+}
+
+.bg-grey-light {
+    background: #F7F7F7;
+}
+
+.bg-white {
+    background: #FCFCFF;
+}
+
+.navy-blue-color {
+    color: #262A41;
+}
+
+.pink-color {
+    color: #F935A9
+}
+
+.green-color {
+    color: #30BBB5;
+}
+
+.purple-color {
+    color: #7946C1;
+}
+
+.grey-light-color {
+    color: #F7F7F7;
+}
+
+.white-color {
+    color: #FCFCFF;
+}
+
+/************************styling*************************/
+.bordered{border: 1px solid grey;}
+.flex-center{display: flex; justify-content: center; align-content: center;}
+.big-outer-wrapper{height:100vh; overflow-y:scroll; overflow-x:hidden;}
+.div-container{height:inherit}
+.left-side-div, .right-side-div {
+    box-sizing: border-box;
+    width: 50%;
+    border-radius: 15px;
+    margin: 10px;
+}
