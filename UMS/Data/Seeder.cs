@@ -1,0 +1,84 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using UMS.Models;
+
+namespace UMS.Data
+{
+    public static class Seeder
+    {
+        public static async Task SeedIt(UMSDbContext context, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        {
+            // Ensure database is created
+            context.Database.EnsureCreated();
+
+            // List of roles and claims
+            var roles = new List<string>() { "Admin", "Member" };
+            var claims = new List<string>() { "Can Create", "Can Delete", "Can Edit" };
+
+            // loop through the list of roles, construct the role object and add it to the db
+            if (!roleManager.Roles.Any())
+            {
+                for (int i = 0; i < roles.Count; i++)
+                {
+                    var role = new IdentityRole(roles[i]);
+                    await roleManager.CreateAsync(role);
+                }
+            }
+
+            // Get users from json file
+            var usersData = await System.IO.File.ReadAllTextAsync("Data/seedData.json");
+            var users = JsonConvert.DeserializeObject<List<AppUser>>(usersData);
+
+            // add users to database
+            if (!userManager.Users.Any())
+            {
+                int counter = 1;
+                IdentityResult result = null;
+                try
+                {
+                    foreach (var user in users)
+                    {
+                        if (counter < 2)
+                        {
+                            result = await userManager.CreateAsync(user, "My@dm1n");
+                            counter += 1;
+                            if (!result.Succeeded)
+                            {
+                                HandleResultErrorMessag(result, "admin");
+                            }
+                            await userManager.AddToRoleAsync(user, roles[0]);
+                        }
+                        else
+                        {
+                            result = await userManager.CreateAsync(user, "P@$$w0rd");
+                            if (!result.Succeeded)
+                            {
+                                HandleResultErrorMessag (result, "member");
+                            }
+                            await userManager.AddToRoleAsync(user, roles[1]);
+                        }
+                    }
+                }catch(Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+
+        }
+
+        // Helper method to handle error generated on creating users
+        private static void HandleResultErrorMessag(IdentityResult result, string usertype)
+        {
+            var errMsg = "";
+            foreach (var err in result.Errors)
+            {
+                errMsg += err.Description + ", ";
+            }
+            throw new Exception($"Failed to preseed {usertype}. " + errMsg);
+        }
+    }
+}
