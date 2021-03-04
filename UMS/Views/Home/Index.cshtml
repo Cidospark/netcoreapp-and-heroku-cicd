@@ -6,7 +6,15 @@
 <div class="big-outer-wrapper bg-navy-blue">
    <div class="div-container flex-center">
        <div class="left-side-div bordered">
-
+           @if(ViewBag.Nmae != null)
+           {
+               <div class="text-white">Welcome @ViewBag.Nmae! you are logged in</div>
+               <div>
+                   <form method="post" asp-action="Logout" asp-controller="Account">
+                       <button class="btn btn-link">Log Out</button>
+                   </form>
+               </div>
+           }
        </div>
        <div class="right-side-div bg-grey-light">
 
