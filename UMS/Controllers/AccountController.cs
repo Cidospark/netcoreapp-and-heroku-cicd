@@ -16,11 +16,13 @@ namespace UMS.Controllers
     {
         private UserManager<AppUser> _userRepo;
         private readonly IHostingEnvironment _hostEnv;
+        private readonly SignInManager<AppUser> _signInMgr;
 
-        public AccountController(UserManager<AppUser> userManager, IHostingEnvironment hostingEnvironment)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHostingEnvironment hostingEnvironment)
         {
             _userRepo = userManager;
             _hostEnv = hostingEnvironment;
+            _signInMgr = signInManager;
         }
 
         [HttpGet]
@@ -85,6 +87,43 @@ namespace UMS.Controllers
             ViewBag.Username = user.UserName;
 
             return View("index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userRepo.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid Credentials");
+                return View(model);
+            }
+
+            var result = await _signInMgr.PasswordSignInAsync(user, model.Password, false, false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Invalid Credentials");
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Home", new { Username = user.UserName });
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInMgr.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

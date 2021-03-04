@@ -13,8 +13,9 @@ namespace UMS.Controllers
         public HomeController()
         {
         }
-        public IActionResult Index()
+        public IActionResult Index(string Username)
         {
+            ViewBag.Nmae = Username;
             return View();
         }
 

@@ -1,0 +1,28 @@
+﻿@model LoginViewModel
+@{ 
+    ViewBag.Title = "Login Page";
+}
+
+<div class="d-flex justify-content-center" style="min-height:400px">
+    <div class="align-items-center col-4 mt-5">
+        <div asp-validation-summary="ModelOnly"></div>
+        <form method="post" asp-action="Login" asp-controller="Account">
+            <div><h1>Log In here!</h1></div>
+            <div class="">
+                <div class="form-group">
+                    <input placeholder="Email" asp-for="Email" class="form-control" />
+                </div>
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="">
+                <div class="form-group">
+                    <input placeholder="Password" asp-for="Password" class="form-control" />
+                </div>
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="">
+                <button class="btn btn-primary" type="submit" >Log In</button>
+            </div>
+        </form>
+    </div>
+</div>
