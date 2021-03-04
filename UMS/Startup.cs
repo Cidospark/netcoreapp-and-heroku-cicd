@@ -38,6 +38,10 @@ namespace UMS
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
             //app.UseDefaultFiles();
             //FileServerOptions fileServerOptions = new FileServerOptions();
