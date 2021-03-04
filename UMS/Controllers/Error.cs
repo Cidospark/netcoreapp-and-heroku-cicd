@@ -25,5 +25,17 @@ namespace UMS.Controllers
             _logger.LogError($"Error Path: {errorDetails.Path}, Error Message: {errorDetails.Error}");
             return View("Error");
         }
+
+        [Route("Error/{statusCode}")]
+        public IActionResult Error(int statusCode)
+        {
+            var statusDetail = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+            if(statusCode == 404)
+            {
+                _logger.LogError($"Message: Page not found!, Error path: {statusDetail.OriginalPath}, Error Query string: {statusDetail.OriginalQueryString}");
+            }
+
+            return View("NotFound");
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace UMS
             else
             {
                 app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             //app.UseDefaultFiles();
@@ -55,10 +56,6 @@ namespace UMS
 
             app.UseMvcWithDefaultRoute();
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello world!");
-            });
         }
     }
 }
