@@ -22,10 +22,21 @@ namespace UMS.Data
             // loop through the list of roles, construct the role object and add it to the db
             if (!roleManager.Roles.Any())
             {
-                for (int i = 0; i < roles.Count; i++)
+                try
                 {
-                    var role = new IdentityRole(roles[i]);
-                    await roleManager.CreateAsync(role);
+                    for (int i = 0; i < roles.Count; i++)
+                    {
+                        var role = new IdentityRole(roles[i]);
+                        var roleResult = await roleManager.CreateAsync(role);
+                        if (!roleResult.Succeeded)
+                        {
+                            HandleResultErrorMessag(roleResult, roles[i]);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
                 }
             }
 
@@ -71,14 +82,14 @@ namespace UMS.Data
         }
 
         // Helper method to handle error generated on creating users
-        private static void HandleResultErrorMessag(IdentityResult result, string usertype)
+        private static void HandleResultErrorMessag(IdentityResult result, string str)
         {
             var errMsg = "";
             foreach (var err in result.Errors)
             {
                 errMsg += err.Description + ", ";
             }
-            throw new Exception($"Failed to preseed {usertype}. " + errMsg);
+            throw new Exception($"Failed to preseed {str}. {errMsg}");
         }
     }
 }
