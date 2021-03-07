@@ -13,5 +13,6 @@ namespace UMS.Data
         public UMSDbContext(DbContextOptions<UMSDbContext> options): base(options){}
 
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<ClaimValue> ClaimsValues { get; set; }
     }
 }

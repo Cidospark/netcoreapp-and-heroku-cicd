@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UMS.Migrations
 {
-    public partial class firstmigtation : Migration
+    public partial class ClaimsValuesMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,19 @@ namespace UMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClaimsValues",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ClaimsType = table.Column<string>(nullable: true),
+                    ClaimsValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClaimsValues", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +246,9 @@ namespace UMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ClaimsValues");
 
             migrationBuilder.DropTable(
                 name: "Photos");
