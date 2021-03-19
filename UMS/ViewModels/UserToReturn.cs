@@ -10,9 +10,9 @@ namespace UMS.ViewModels
 {
     public class UserToReturn
     {
-        [Required]
         public IFormFile Photo { get; set; }
         [Required]
         public string Username { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

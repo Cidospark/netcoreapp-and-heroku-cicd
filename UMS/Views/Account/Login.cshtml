@@ -1,12 +1,13 @@
 ﻿@model LoginViewModel
 @{ 
     ViewBag.Title = "Login Page";
+    var returnUrl = ViewBag.ReturnUrl != "" ? ViewBag.ReturnUrl : "/";
 }
 
 <div class="d-flex justify-content-center" style="min-height:400px">
     <div class="align-items-center col-4 mt-5">
         <div asp-validation-summary="ModelOnly"></div>
-        <form method="post" asp-action="Login" asp-controller="Account">
+        <form method="post" asp-action="Login" asp-controller="Account" asp-route-returnUrl = "@returnUrl">
             <div><h1>Log In here!</h1></div>
             <div class="">
                 <div class="form-group">

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +27,15 @@ namespace UMS.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string photoPath)
+        [Authorize]
+        public IActionResult Index()
         {
-            throw new Exception("This page must not LOAD!");
-            ViewBag.PhotoPath = photoPath;
+            //throw new Exception("This page must not LOAD!");
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Upload(UserToReturn model)
         {
             if (!ModelState.IsValid)
@@ -91,12 +93,13 @@ namespace UMS.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -115,7 +118,11 @@ namespace UMS.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("Index", "Home", new { Username = user.UserName });
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         

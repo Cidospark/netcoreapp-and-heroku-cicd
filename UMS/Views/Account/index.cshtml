@@ -1,6 +1,7 @@
 ﻿@model UserToReturn
 @{ 
     ViewBag.Title = "Upload Photo";
+    
 } 
 
 <div class="container">
@@ -19,6 +20,7 @@
                     <input type="submit" class="btn btn-primary" value="Upload" />
                 </div>
             </form>
+            <div asp-validation-summary="ModelOnly"></div>
             <div>
                 @if (ViewBag.Message != null)
                 {
