@@ -13,9 +13,6 @@
               asp-suppress-fallback-integrity="true">
     </environment>
     <environment include="Development">
-        <script src="~/lib/jquery/jquery.js"></script>
-        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
         <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
     </environment>
@@ -23,22 +20,26 @@
 </head>
 <body>
     @*<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand">
-                <img src="~/images/mami.jpeg" width="30" height="30" asp-append-version="true" />
-            </a>
-            <button type="button" class="navbar-toggler" data-target="#collapsibleNavbar" data-toggle="collapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link">About</a></li>
-                    <li class="nav-item"><a class="nav-link">Contact</a></li>
-                </ul>
+            <div class="container">
+                <a class="navbar-brand">
+                    <img src="~/images/mami.jpeg" width="30" height="30" asp-append-version="true" />
+                </a>
+                <button type="button" class="navbar-toggler" data-target="#collapsibleNavbar" data-toggle="collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link">About</a></li>
+                        <li class="nav-item"><a class="nav-link">Contact</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>*@
+        </nav>*@
     @RenderBody()
 </body>
+
 @RenderSection("Scripts", required: false)
 </html>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-validate/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>

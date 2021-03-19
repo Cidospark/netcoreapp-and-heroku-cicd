@@ -93,21 +93,25 @@ namespace UMS.Controllers
 
 
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string ReturnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl)
         {
             if (!ModelState.IsValid)
+            {
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
+            }
 
             var user = await _userRepo.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid Credentials");
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
             }
 
@@ -115,12 +119,13 @@ namespace UMS.Controllers
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Invalid Credentials");
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
             }
 
-            if (!string.IsNullOrWhiteSpace(returnUrl))
+            if (!string.IsNullOrWhiteSpace(ReturnUrl))
             {
-                return Redirect(returnUrl);
+                return Redirect(ReturnUrl);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -131,6 +136,18 @@ namespace UMS.Controllers
         {
             await _signInMgr.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [AcceptVerbs("Get","Post")]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await _userRepo.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return Json(true);
+            }
+            return Json($"Email: {email} already in use!");
         }
     }
 }
