@@ -13,10 +13,9 @@
               asp-suppress-fallback-integrity="true">
     </environment>
     <environment include="Development">
-        <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
-        <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
     </environment>
     <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
     @*<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -36,10 +35,11 @@
             </div>
         </nav>*@
     @RenderBody()
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-validate/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
 </body>
 
 @RenderSection("Scripts", required: false)
 </html>
-<script src="~/lib/jquery/jquery.js"></script>
-<script src="~/lib/jquery-validate/jquery.validate.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>

@@ -1,0 +1,100 @@
+﻿@model CreateRoleViewModel
+@{
+    ViewBag.Title = "Create Role";
+}
+
+<br />
+
+@if (Model.NewRole != null)
+{
+    <h1 class="ml-2">Edit Role</h1>
+    <form method="post" asp-action="EditRole" asp-controller="Administration" class="m-4">
+        <div class="form-group">
+            <div class="row">
+                <input hidden asp-for="@Model.NewRole.RoleId" placeholder="Role Id" class="form-control" />
+            </div>
+            <span asp-validation-for="RoleName"></span>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <input asp-for="@Model.NewRole.RoleName" placeholder="Role name" class="form-control" />
+            </div>
+            <span asp-validation-for="RoleName"></span>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Edit Role</button>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <h1 class="ml-2">Create New Role</h1>
+    <form method="post" asp-action="CreateRole" asp-controller="Administration" class="m-4">
+        <div class="form-group">
+            <div class="row">
+                <input asp-for="RoleName" placeholder="Role name" class="form-control" />
+            </div>
+            <span asp-validation-for="RoleName"></span>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Create Role</button>
+            </div>
+        </div>
+    </form>
+}
+
+<div asp-validation-summary="ModelOnly"></div>
+@if (ViewBag.Msg != null && ViewBag.Msg == "success")
+{
+    <div class="p-2">Role added successfully!</div>
+}
+else if (ViewBag.Msg != null && ViewBag.Msg == "edited")
+{
+    <div class="p-2">Role edited successfully!</div>
+}
+
+@if (ViewBag.ModelErr != null)
+{
+    <div class="p-2">@ViewBag.ModelErr</div>
+}
+
+@if (!Model.ListOfRoles.Any())
+{
+    <div class="border rounded p-5 text-center">
+        <p>No role(s) found!</p>
+    </div>
+}
+else
+{
+    <h2 class="ml-2">All Roles</h2>
+    <table style="width:50%" class="m-2 border">
+        @for (int i = 0; i < Model.ListOfRoles.Count; i++)
+        {
+        <tr class="m-2 border">
+            <td style="width:70%" class="p-2">@Model.ListOfRoles[i].RoleName</td>
+            <td class="">
+                <a class="btn btn-primary mr-auto" asp-action="Index" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Edit</a>
+            </td>
+            <td class="">
+                <a class="btn btn-primary mr-auto" asp-action="Index" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Role Users</a>
+            </td>
+            <td class="">
+                <a class="btn btn-danger mr-auto" asp-action="DeleteRole" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Delete</a>
+            </td>
+        </tr>
+
+        }
+    </table>
+}
+
+
+@*<script>
+        function getRoleId(roleId) {
+            let elem = document.getElementById("newRoleId");
+            elem.value = roleId;
+            alert(roleId)
+        }
+    </script>*@
