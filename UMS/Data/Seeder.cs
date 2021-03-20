@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UMS.Models;
 
@@ -17,7 +18,7 @@ namespace UMS.Data
 
             // List of roles and claims
             var roles = new List<string>() { "Admin", "Member" };
-            var claims = new List<string>() { "Can Create", "Can Delete", "Can Edit" };
+            var allClaims = new List<string>() { "Can Create", "Can Delete", "Can Edit" };
 
             // loop through the list of roles, construct the role object and add it to the db
             if (!roleManager.Roles.Any())
@@ -39,6 +40,31 @@ namespace UMS.Data
                     throw new Exception(e.Message);
                 }
             }
+
+
+            // if no claims values found in the database, then create some
+            if (!context.ClaimsValues.Any())
+            {
+                try
+                {
+                    for (int i = 0; i < allClaims.Count; i++)
+                    {
+                        var singleClaim = new ClaimValue { ClaimsType = allClaims[i], ClaimsValue = allClaims[i] };
+                        context.ClaimsValues.Add(singleClaim);
+                        var roleResult = await context.SaveChangesAsync();
+                        if (roleResult <= 0)
+                        {
+                            throw new Exception($"Failed to add claim value : {allClaims[i]} to the database");
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+
 
             // Get users from json file
             var usersData = await System.IO.File.ReadAllTextAsync("Data/seedData.json");
@@ -62,6 +88,10 @@ namespace UMS.Data
                                 HandleResultErrorMessag(result, "admin");
                             }
                             await userManager.AddToRoleAsync(user, roles[0]);
+                            foreach(var item in allClaims)
+                            {
+                                await userManager.AddClaimAsync(user, new Claim(item, "true"));
+                            }
                         }
                         else
                         {
@@ -71,6 +101,7 @@ namespace UMS.Data
                                 HandleResultErrorMessag (result, "member");
                             }
                             await userManager.AddToRoleAsync(user, roles[1]);
+                            await userManager.AddClaimAsync(user, new Claim(allClaims[2], "true"));
                         }
                     }
                 }catch(Exception e)

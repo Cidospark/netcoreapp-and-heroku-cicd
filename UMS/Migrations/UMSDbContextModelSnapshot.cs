@@ -179,6 +179,20 @@ namespace UMS.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("UMS.Models.ClaimValue", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClaimsType");
+
+                    b.Property<string>("ClaimsValue");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClaimsValues");
+                });
+
             modelBuilder.Entity("UMS.Models.Photo", b =>
                 {
                     b.Property<string>("Id")

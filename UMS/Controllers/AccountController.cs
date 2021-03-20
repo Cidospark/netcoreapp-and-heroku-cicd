@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +27,15 @@ namespace UMS.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string photoPath)
+        [Authorize]
+        public IActionResult Index()
         {
-            throw new Exception("This page must not LOAD!");
-            ViewBag.PhotoPath = photoPath;
+            //throw new Exception("This page must not LOAD!");
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Upload(UserToReturn model)
         {
             if (!ModelState.IsValid)
@@ -91,20 +93,25 @@ namespace UMS.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
+            ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl)
         {
             if (!ModelState.IsValid)
+            {
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
+            }
 
             var user = await _userRepo.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid Credentials");
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
             }
 
@@ -112,10 +119,15 @@ namespace UMS.Controllers
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Invalid Credentials");
+                ViewBag.ReturnUrl = ReturnUrl;
                 return View(model);
             }
 
-            return RedirectToAction("Index", "Home", new { Username = user.UserName });
+            if (!string.IsNullOrWhiteSpace(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         
@@ -124,6 +136,18 @@ namespace UMS.Controllers
         {
             await _signInMgr.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [AcceptVerbs("Get","Post")]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await _userRepo.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return Json(true);
+            }
+            return Json($"Email: {email} already in use!");
         }
     }
 }

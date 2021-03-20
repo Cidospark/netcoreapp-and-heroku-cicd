@@ -51,11 +51,17 @@ namespace UMS
 
             //app.UseFileServer(fileServerOptions);
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             Seeder.SeedIt(ctx, roleMgr, userMgr).Wait();
 
             app.UseMvcWithDefaultRoute();
 
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Hello world!");
+            });
         }
     }
 }

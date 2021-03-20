@@ -1,25 +1,28 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<AppUser> _signInManager
+@inject UserManager<AppUser> _userManager
+@{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
 
 <div class="big-outer-wrapper bg-navy-blue">
-   <div class="div-container flex-center">
-       <div class="left-side-div bordered">
-           @if(ViewBag.Nmae != null)
-           {
-               <div class="text-white">Welcome @ViewBag.Nmae! you are logged in</div>
-               <div>
-                   <form method="post" asp-action="Logout" asp-controller="Account">
-                       <button class="btn btn-link">Log Out</button>
-                   </form>
-               </div>
-           }
-       </div>
-       <div class="right-side-div bg-grey-light">
+    <div class="div-container flex-center">
+        <div class="left-side-div bordered">
+            @if (_signInManager.IsSignedIn(User))
+            {
+                <div class="text-white">Welcome @_userManager.GetUserName(User)! you are logged in</div>
+                <div>
+                    <form method="post" asp-action="Logout" asp-controller="Account">
+                        <button class="btn btn-link">Log Out</button>
+                    </form>
+                </div>
+            }
+        </div>
+        <div class="right-side-div bg-grey-light">
 
-       </div>
-   </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{
