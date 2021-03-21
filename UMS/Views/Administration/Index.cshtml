@@ -56,6 +56,17 @@ else if (ViewBag.Msg != null && ViewBag.Msg == "edited")
     <div class="p-2">Role edited successfully!</div>
 }
 
+@if (ViewBag.Msg != null && ViewBag.Msg == "failed")
+{
+    <div class="p-2">Operation failed!</div>
+}
+
+
+@if (ViewBag.Msg != null && ViewBag.Msg == "invalid")
+{
+    <div class="p-2">Invalid model state!</div>
+}
+
 @if (ViewBag.ModelErr != null)
 {
     <div class="p-2">@ViewBag.ModelErr</div>
@@ -69,25 +80,92 @@ else if (ViewBag.Msg != null && ViewBag.Msg == "edited")
 }
 else
 {
-    <h2 class="ml-2">All Roles</h2>
-    <table style="width:50%" class="m-2 border">
-        @for (int i = 0; i < Model.ListOfRoles.Count; i++)
-        {
-        <tr class="m-2 border">
-            <td style="width:70%" class="p-2">@Model.ListOfRoles[i].RoleName</td>
-            <td class="">
-                <a class="btn btn-primary mr-auto" asp-action="Index" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Edit</a>
-            </td>
-            <td class="">
-                <a class="btn btn-primary mr-auto" asp-action="Index" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Role Users</a>
-            </td>
-            <td class="">
-                <a class="btn btn-danger mr-auto" asp-action="DeleteRole" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Delete</a>
-            </td>
-        </tr>
+    <div class="d-flex justify-content-between">
+        <div style="width:48%">
+            <h2 class="ml-2">All Roles</h2>
+            <div style="max-height:250px; overflow-y:auto">
+                <table style="" class="m-2 ">
+                    @for (int i = 0; i < Model.ListOfRoles.Count; i++)
+                    {
 
-        }
-    </table>
+                        <tr class="m-2 border">
+                            <td style="width:60%" class="p-2">@Model.ListOfRoles[i].RoleName</td>
+                            <td class="">
+                                <a class="btn btn-primary mr-auto" asp-action="Index" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Edit</a>
+                            </td>
+                            <td class="">
+                                <a class="btn btn-primary mr-auto" asp-action="Index"
+                                   asp-route-showUsers="true" asp-route-roleId="@Model.ListOfRoles[i].RoleId">Role Users</a>
+                            </td>
+                            <td class="">
+                                <a class="btn btn-danger mr-auto" asp-action="DeleteRole" onclick="return confirm('Please confirm action')"
+                                   asp-route-roleId="@Model.ListOfRoles[i].RoleId">Delete</a>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+        </div>
+        <div style="width:50%">
+            @if ((Model.ListOfRoleUsers == null || Model.ListOfRoleUsers.Count <= 0) && ViewBag.ShowRoleUsers == "false")
+            {
+                <div class="border rounded p-5 text-center mt-5">
+                    <p>Click 'Role Users' to see users in the role here...</p>
+                </div>
+            }
+            else
+            {
+                <div class="card mt-5">
+                    <div class="card-header"><h2 class="ml-2">@Model.RoleName Role Users</h2></div>
+                    <form method="post" asp-action="DeleteRoleUsers" asp-controller="Administration">
+                        <div class="card-body">
+                            @if (Model.ListOfRoleUsers.Count <= 0 || Model.ListOfRoleUsers == null)
+                            {
+                                <div>No record found!</div>
+                            }
+                            else
+                            {
+                                <div class="rounded border">Filter: default number of list, box to select number of list, filter by criteria(name, etc)</div>
+                                <div style="max-height:200px; overflow-y:auto">
+                                    <table style="width:40%" class="m-2">
+                                        @for (int i = 0; i < Model.ListOfRoleUsers.Count; i++)
+                                        {
+                                            <tr class="m-2">
+                                                <td style="width:5%" class="p-2">
+                                                    <input asp-for="@Model.ListOfRoleUsers[i].IsInRole" />
+                                                </td>
+                                                <td style="width:60%" class="p-2">
+                                                    <input asp-for="@Model.ListOfRoleUsers[i].UserId" hidden />
+                                                    @Model.ListOfRoleUsers[i].Username
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </table>
+                                </div>
+                                <div class="rounded border">
+                                    You can display all users with a checkbox to show if they belong to the 
+                                    role or not managed by filter. for easy adding and removal from the role
+                                </div>
+
+                            }
+                        </div>
+                        @if (Model.ListOfRoleUsers.Count <= 0 || Model.ListOfRoleUsers == null) { }
+                        else
+                        {
+                            <input asp-for="@Model.RoleName" hidden />
+                            <div class="card-footer">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary form-control">Remove Unselected Users</button>
+                                </div>
+                            </div>
+                        }
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
 }
 
 

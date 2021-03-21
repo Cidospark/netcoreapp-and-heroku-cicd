@@ -11,12 +11,15 @@ namespace UMS.ViewModels
         [Required]
         public string RoleName { get; set; }
         public List<RolesViewModel> ListOfRoles { get; set; }
+        public List<RoleUsersViewModel> ListOfRoleUsers { get; set; }
 
         public RolesViewModel NewRole { get; set; }
+
 
         public CreateRoleViewModel()
         {
             ListOfRoles = new List<RolesViewModel>();
+            ListOfRoleUsers = new List<RoleUsersViewModel>();
         }
     }
 }

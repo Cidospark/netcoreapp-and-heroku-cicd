@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UMS.Models;
 using UMS.ViewModels;
 
 namespace UMS.Controllers
 {
+    [Authorize]
     public class AdministrationController : Controller
     {
         private RoleManager<IdentityRole> _roleMgr;
+        private UserManager<AppUser> _userMgr;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleMgr = roleManager;
+            _userMgr = userManager;
         }
-        public async Task<IActionResult> Index(string statusMessage, string roleId, bool err)
+
+        public async Task<IActionResult> Index(string statusMessage, string roleId, bool showUsers, bool err)
         {
             ViewBag.Msg = statusMessage;
+            ViewBag.ShowRoleUsers = "false";
             var roles = _roleMgr.Roles.ToList();
 
             if (err)
@@ -45,14 +52,32 @@ namespace UMS.Controllers
             {
                 ListOfRoles = lstRoles
             };
-            if(roleId != null)
+
+            var roleToEdit = await _roleMgr.FindByIdAsync(roleId);
+            if(roleId != null && showUsers == true)
             {
-                var roleToEdit = await _roleMgr.FindByIdAsync(roleId);
+                var users = await _userMgr.GetUsersInRoleAsync(roleToEdit.Name);
+                foreach (var roleUser in users)
+                {
+                    var roleUserToReturn = new RoleUsersViewModel
+                    {
+                        UserId = roleUser.Id,
+                        Username = roleUser.UserName,
+                        IsInRole = true
+                    };
+
+                    model.ListOfRoleUsers.Add(roleUserToReturn);
+                }
+                model.RoleName = roleToEdit.Name;
+                ViewBag.ShowRoleUsers = "true";
+            }else if(roleId != null && showUsers == false)
+            {
                 model.NewRole = new RolesViewModel
                 {
                     RoleId = roleToEdit.Id,
                     RoleName = roleToEdit.Name
                 };
+                    
             }
             return View(model);
         }
@@ -109,6 +134,56 @@ namespace UMS.Controllers
             }
 
             return RedirectToAction("Index", "Administration", new { statusMessage = "edited" });
+        }
+
+
+        [HttpGet][HttpPost]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            if(string.IsNullOrWhiteSpace(roleId))
+                return RedirectToAction("Index", "Administration", new { statusMessage = "failed" });
+
+            var role = await _roleMgr.FindByIdAsync(roleId);
+            if (role == null)
+                return RedirectToAction("Index", "Administration", new { statusMessage = "failed" });
+
+            var result = await _roleMgr.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                foreach(var err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+                return RedirectToAction("Index", "Administration", new { statusMessage = "failed" });
+            }
+
+            return RedirectToAction("Index", "Administration");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRoleUsers(CreateRoleViewModel model)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction("Index", "Administration", new { statusMessage = "invalid" });
+
+            foreach(var RoleUser in model.ListOfRoleUsers)
+            {
+                var user = await _userMgr.FindByIdAsync(RoleUser.UserId);
+                await _userMgr.RemoveFromRoleAsync(user, model.RoleName);
+            }
+
+            foreach (var RoleUser in model.ListOfRoleUsers)
+            {
+                var user = await _userMgr.FindByIdAsync(RoleUser.UserId);
+                if (RoleUser.IsInRole)
+                {
+                    await _userMgr.AddToRoleAsync(user, model.RoleName);
+                }
+            }
+
+            return RedirectToAction("Index", "Administration");
+
         }
     }
 }
